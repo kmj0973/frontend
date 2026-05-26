@@ -1,0 +1,119 @@
+@use '@/styles/typography' as *;
+
+.create-group-back {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 10px 0 10px 6px;
+}
+
+.create-group-title {
+  margin: 34px 0 0;
+  color: var(--color-brand-500);
+  font-family: var(--font-family-title);
+  font-size: 26px;
+  font-weight: 400;
+  line-height: 1.4;
+  letter-spacing: 0.02em;
+}
+
+.create-group-text {
+  margin: 48px 0 0;
+
+  h2 {
+    @include text-h-title;
+    line-height: 140%; /* 33.6px */
+    letter-spacing: 0.576px;
+  }
+
+  p {
+    color: var(--color-text-muted);
+    font-size: 12px;
+    font-weight: 300;
+    line-height: 140%; /* 16.8px */
+    letter-spacing: 0.288px;
+  }
+}
+
+.create-group-input {
+  margin: 54px 0 0;
+  width: 100%;
+  max-width: 320px;
+}
+
+.create-group-period {
+  margin: 30px 0 0;
+  width: 100%;
+  max-width: 320px;
+}
+
+.create-group-period-text {
+  text-align: start;
+
+  h3 {
+    color: var(--color-text-strong);
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.4;
+    letter-spacing: 0.038em;
+  }
+
+  p {
+    color: var(--color-text-muted);
+    font-size: 10px;
+    font-weight: var(--font-weight-regular);
+    line-height: 1.4;
+    letter-spacing: 0.024em;
+  }
+}
+
+.create-group-period-options {
+  margin: 10px 0 0;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.period-option {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px;
+  border: 2px solid var(--color-border);
+  border-radius: 12px;
+  background: var(--color-surface);
+  color: var(--color-text-strong);
+  font-size: 12px;
+  font-weight: var(--font-weight-medium);
+  line-height: 1.4;
+  cursor: pointer;
+}
+
+.period-option--selected {
+  border-color: var(--color-brand-500);
+  background: var(--color-brand-500);
+  color: var(--color-text-inverse);
+}
+
+.create-group-period-input {
+  margin: 32px 0 0;
+  width: 100%;
+  max-width: 320px;
+  h4 {
+    margin-bottom: 6px;
+    text-align: start;
+    color: var(--color-text-strong);
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.4;
+    letter-spacing: 0.038em;
+    span {
+      color: var(--color-text-muted);
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 1.4;
+      letter-spacing: 0.033em;
+    }
+  }
+}

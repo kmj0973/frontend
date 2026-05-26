@@ -1,0 +1,42 @@
+.button {
+  width: 100%;
+  height: 60px;
+  border: 0;
+  border-radius: 36px;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.4;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.button--light {
+  background: #fcfdfd;
+  color: #ff822e;
+}
+
+.button--brand {
+  background: #ff822e;
+  color: #fcfdfd;
+}
+
+.button--muted {
+  border: 2px solid var(--color-border);
+  background: #ffffff;
+  color: #848b9c;
+}
+
+.button--surface-muted {
+  border: 2px solid #e2e2e2;
+  background: var(--, #f2f2f2);
+  color: #848b9c;
+}
+
+.button--disabled,
+.button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}

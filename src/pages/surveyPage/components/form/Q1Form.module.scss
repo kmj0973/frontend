@@ -1,0 +1,17 @@
+@use '@/layouts/SurveyLayout' as layout;
+
+.Q1-container {
+    @include layout.survey-form-shell;
+
+    .select-button-container {
+        @include layout.survey-tier-body;
+        display: flex;
+        flex-direction: column;
+        justify-content: safe center;
+        gap: layout.$survey-body-gap;
+    }
+
+    .action-container {
+        @include layout.survey-tier-footer;
+    }
+}

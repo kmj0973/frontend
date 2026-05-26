@@ -1,0 +1,114 @@
+.input-field-group {
+  width: 100%;
+}
+
+.input-field {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 58px;
+  padding: 0 18px;
+  border: 2px solid var(--color-border);
+  border-radius: 12px;
+  background: var(--color-bg);
+}
+
+.input-field--clickable {
+  cursor: pointer;
+}
+
+.input-field--default {
+  border-color: var(--color-border);
+  background: var(--color-bg);
+}
+
+.input-field--error {
+  border-color: var(--color-danger);
+  background: rgba(255, 82, 82, 0.2);
+}
+
+.input-field--success {
+  border-color: var(--color-brand-500);
+  background: var(--color-bg);
+}
+
+.input-field__input {
+  width: 100%;
+  border: 0;
+  background: transparent;
+  color: var(--color-text-strong);
+  font-size: 14px;
+  font-weight: var(--font-weight-semibold);
+  line-height: 1.4;
+  letter-spacing: 0.024em;
+  outline: none;
+}
+
+.input-field__input--with-icon {
+  padding-right: 12px;
+}
+
+.input-field__input::placeholder {
+  color: var(--color-text-muted);
+}
+
+.input-field__input--default::placeholder {
+  color: var(--color-text-muted);
+}
+
+.input-field__input--default {
+  color: var(--color-text-strong);
+}
+
+.input-field__input--error {
+  color: var(--color-danger);
+}
+
+.input-field__input--error::placeholder {
+  color: var(--color-danger);
+}
+
+.input-field__input--success {
+  color: var(--color-text-strong);
+}
+
+.input-field__input--success::placeholder {
+  color: var(--color-text-muted);
+}
+
+.input-field__input:disabled {
+  cursor: not-allowed;
+}
+
+.input-field__input:read-only {
+  cursor: inherit;
+}
+
+.input-field__message {
+  margin-top: 6px;
+  padding-left: 10px;
+  color: var(--color-text-muted);
+  font-size: 10px;
+  font-weight: var(--font-weight-regular);
+  line-height: 1.4;
+  letter-spacing: 0.024em;
+  text-align: start;
+}
+
+.input-field__message--default,
+.input-field__message--success {
+  color: var(--color-text-muted);
+}
+
+.input-field__message--error {
+  color: var(--color-danger);
+}
+
+.input-field__icon {
+  display: flex;
+  width: 20px;
+  height: 20px;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}

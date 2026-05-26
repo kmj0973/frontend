@@ -1,3 +1,5 @@
+@use '@/styles/typography' as *;
+
 .results-conflict-list {
   display: flex;
   flex-direction: column;
@@ -5,8 +7,8 @@
 }
 
 .conflict-card {
-  background: #fff;
-  border: 1px solid #e2e2e2;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
   border-radius: 26px;
 }
 
@@ -36,17 +38,14 @@
 .conflict-copy {
   h3 {
     margin: 0;
-    font-size: 14px;
-    font-weight: 500;
-    line-height: 1.4;
+    color: var(--color-text-strong);
+    @include text-c-card-title;
   }
 
   > p {
     margin-top: 1px;
-    color: #848b9c;
-    font-size: 12px;
-    font-weight: 400;
-    line-height: 1.4;
+    color: var(--color-text-muted);
+    @include text-c-meta;
   }
 }
 
@@ -54,8 +53,7 @@
   margin-top: 6px;
 
   p {
-    color: #848b9c;
-    font-size: 12px;
-    line-height: 1.4;
+    color: var(--color-text-muted);
+    @include text-c-meta;
   }
 }

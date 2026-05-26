@@ -1,0 +1,23 @@
+@use '@/layouts/SurveyLayout' as layout;
+
+.page-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100vh;
+    height: 100dvh;
+    overflow: hidden;
+}
+
+.tier-progress {
+    flex-shrink: 0;
+    height: layout.$survey-tier-1-height;
+    margin-bottom: layout.$survey-tier-gap;
+}
+
+.form-wrapper {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+}

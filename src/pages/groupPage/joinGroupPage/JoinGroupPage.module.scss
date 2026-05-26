@@ -1,0 +1,21 @@
+@use '@/styles/typography' as *;
+
+.create-group-page {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+.create-group-section {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0 24px;
+  text-align: center;
+}
+
+.create-group-cta {
+  padding: 42px 25px;
+}

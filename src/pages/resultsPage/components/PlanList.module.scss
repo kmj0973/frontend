@@ -1,3 +1,5 @@
+@use '@/styles/typography' as *;
+
 .collapsed-plan-list {
   display: flex;
   flex-direction: column;
@@ -6,10 +8,10 @@
 
 .featured-plan,
 .collapsed-plan {
-  background: #fff;
-  border: 1px solid #e2e2e2;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
   border-radius: 26px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 2px 6px var(--color-shadow-soft);
   position: relative;
   overflow: hidden;
   padding: 24px 36px 24px 30px;
@@ -33,11 +35,10 @@
   width: auto;
   height: auto;
   padding: 10px 8px 19px 8px;
-  background: #ff822e;
-  color: #fff;
-  font-size: 12px;
-  font-weight: 700;
-  line-height: 1.4;
+  background: var(--color-brand-500);
+  color: var(--color-text-inverse);
+  @include text-c-meta;
+  font-weight: var(--font-weight-bold);
   clip-path: polygon(0 0, 100% 0, 100% 82%, 50% 100%, 0 82%);
 }
 
@@ -54,8 +55,10 @@
 
   h3 {
     margin: 0;
-    font-size: 18px;
-    font-weight: 700;
+    color: var(--color-text-strong);
+    font-family: var(--font-family-body);
+    font-size: 1.125rem;
+    font-weight: var(--font-weight-bold);
     line-height: 1.4;
   }
 }
@@ -73,10 +76,7 @@
   min-height: 22px;
   padding: 4px 10px;
   border-radius: 999px;
-  font-size: 10px;
-  font-weight: 500;
-  line-height: 1.4;
-  letter-spacing: 0.024em;
+  @include text-c-badge;
 }
 
 .tag-green {
@@ -98,7 +98,7 @@
   padding: 0;
   border: none;
   background: transparent;
-  color: #848b9c;
+  color: var(--color-text-muted);
   cursor: pointer;
 
   svg {
@@ -167,9 +167,9 @@
 
 .timeline-day-label {
   margin-bottom: 10px;
-  font-size: 12px;
-  font-weight: 600;
-  line-height: 1.4;
+  color: var(--color-text-strong);
+  @include text-b-caption;
+  font-weight: var(--font-weight-semibold);
 }
 
 .timeline-list {
@@ -193,7 +193,7 @@
   height: 12px;
   margin-top: 2px;
   border-radius: 50%;
-  background: #ff9d4f;
+  background: var(--color-brand-500);
 }
 
 .timeline-line {
@@ -202,31 +202,26 @@
   left: 5px;
   width: 2px;
   height: calc(100% - 2px);
-  background: #f3dfcf;
+  background: color-mix(in srgb, var(--color-brand-300) 78%, white);
 }
 
 .timeline-time {
-  color: #555;
-  font-size: 12px;
-  font-weight: 300;
-  line-height: 1.4;
+  color: var(--color-text);
+  @include text-c-meta;
 }
 
 .timeline-copy {
   p {
-    font-size: 14px;
-    font-weight: 500;
-    line-height: 1.4;
+    color: var(--color-text-strong);
+    @include text-c-card-title;
   }
 }
 
 .timeline-note {
   display: block;
   margin-top: 1px;
-  color: #848b9c;
-  font-size: 12px;
-  font-weight: 400;
-  line-height: 1.4;
+  color: var(--color-text-muted);
+  @include text-c-meta;
 }
 
 .vote-button {
@@ -235,22 +230,19 @@
   margin-top: 14px;
   border: none;
   border-radius: 36px;
-  background: #ff822e;
-  color: #fff;
-  font-size: 14px;
-  font-weight: 600;
-  line-height: 1.4;
+  background: var(--color-brand-500);
+  color: var(--color-text-inverse);
+  @include text-c-card-title;
+  font-weight: var(--font-weight-semibold);
   letter-spacing: 0.024em;
   cursor: pointer;
 }
 
 .vote-meta {
   margin-top: 8px;
-  color: #848b9c;
+  color: var(--color-text-muted);
   text-align: center;
-  font-size: 12px;
-  font-weight: 300;
-  line-height: 1.4;
+  @include text-c-meta;
 }
 
 .results-home-indicator {
@@ -262,6 +254,6 @@
     width: 134px;
     height: 5px;
     border-radius: 999px;
-    background: #626877;
+    background: color-mix(in srgb, var(--color-text-muted) 72%, #2c313a);
   }
 }

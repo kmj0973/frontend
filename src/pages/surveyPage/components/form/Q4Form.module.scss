@@ -1,0 +1,16 @@
+@use '@/layouts/SurveyLayout' as layout;
+
+.Q4-container {
+    @include layout.survey-form-shell;
+
+    .slider-area {
+        @include layout.survey-tier-body;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .action-container {
+        @include layout.survey-tier-footer;
+    }
+}

@@ -1,0 +1,24 @@
+@use '@/layouts/SurveyLayout' as layout;
+
+.Q5-container {
+    @include layout.survey-form-shell;
+
+    .content-area {
+        @include layout.survey-tier-body;
+        display: flex;
+        flex-direction: column;
+        padding-top: 8px;
+        padding-bottom: 8px;
+    }
+
+    .textbox-area {
+        flex: 1;
+        min-height: 160px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .action-container {
+        @include layout.survey-tier-footer;
+    }
+}

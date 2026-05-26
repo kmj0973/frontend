@@ -1,9 +1,11 @@
+@use '@/styles/typography' as *;
+
 .results-page {
   min-height: 100vh;
   display: flex;
   justify-content: center;
-  background: #fcfdfd;
-  color: #191919;
+  background: var(--color-bg);
+  color: var(--color-text-strong);
 }
 
 .results-phone-frame {
@@ -14,7 +16,7 @@
     180deg,
     rgba(255, 217, 192, 0.3) 0,
     rgba(255, 217, 192, 0.3) 158px,
-    #fcfdfd 158px
+    var(--color-bg) 158px
   );
 }
 
@@ -29,36 +31,28 @@
 
 .results-hero-subtitle {
   margin-bottom: 8px;
-  color: #848b9c;
-  font-size: 12px;
-  font-weight: 300;
-  line-height: 1.4;
+  color: var(--color-text-muted);
+  @include text-c-meta;
 }
 
 .results-hero h1 {
   margin: 0;
-  font-size: 22px;
-  font-weight: 600;
-  line-height: 1.4;
+  @include text-h-hero;
 }
 
 .results-hero-meta {
   margin-top: 2px;
-  color: #848b9c;
-  font-size: 12px;
-  font-weight: 300;
-  line-height: 1.4;
+  color: var(--color-text-muted);
+  @include text-c-meta;
 }
 
 .results-section {
-  background: #fff;
+  background: var(--color-surface);
   padding: 0 37px;
   padding-top: 16px;
 
   h2 {
     margin: 0 0 16px;
-    font-size: 20px;
-    font-weight: 500;
-    line-height: 1.4;
+    @include text-h-section;
   }
 }

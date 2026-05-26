@@ -1,0 +1,26 @@
+.progress-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    gap: 10px;
+    padding: 0 20px;
+    margin-top: 20px;
+    box-sizing: border-box;
+
+    .progress-segment {
+        width: 15px;
+        height: 15px;
+        background-color: #F2F2F2;
+        border-radius: 50%;
+        transition: all 0.3s ease;
+
+        &.active {
+            width: 40px;
+            height: 15px;
+            background-color: #FF822E;
+            border-radius: 15px;
+        }
+    }
+}

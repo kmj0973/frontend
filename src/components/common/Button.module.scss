@@ -1,0 +1,165 @@
+// figma 정의 스타일 (MCP: 부기텐_트립트루스 복사본 group 페이지)
+$color-text-primary: #191919;
+$color-text-on-primary: #FCFDFD;
+$color-text-sub: #848B9C;
+$color-border-default: #E2E2E2;
+$color-bg-page: #FCFDFD;
+$color-primary: #FF822E;
+$color-primary-light-bg: #FFF2EA;
+$color-kakao: #FFE812;
+$color-error: #FF5252;
+$color-white: #FFFFFF;
+$color-gray-background: #F2F2F2;
+
+// 기존 변수명 호환 (survey 등 다른 페이지)
+$primary-orange: $color-primary;
+$light-orange: #FFD9C0;
+$gray-border: $color-border-default;
+$gray-background: $color-gray-background;
+$gray-text: $color-text-sub;
+
+// 버튼 아이콘 스타일
+.button-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    
+    // 이미지 비율 깨짐 방지 및 기본 크기 지정
+    width: 20px;   
+    height: 20px;
+    object-fit: contain;
+}
+
+.button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid $gray-border;
+    background-color: white;
+    color: $gray-text;
+    transition: all 0.2s ease;        // 클릭시 부드러운 효과 
+    font-family: "Pretendard Variable", sans-serif;
+    line-height: 140%;
+    letter-spacing: 2.4%;
+
+    // 1. 선택형 버튼 (Q1, Q2 스타일)
+    &.button-select {
+        border-radius: 15px;
+
+        font-size: 18px;
+        font-weight: 600;
+
+        &.clicked {
+            border-color: $primary-orange;
+            background-color: $light-orange;
+            color: $primary-orange;
+        }
+    }
+
+    // 2. 태그형 버튼 (Q3 스타일)
+    &.button-tag {
+        border-radius: 40px;
+
+        font-size: 12px;
+        font-weight: 500;
+        
+        &.clicked {
+            border-color: $primary-orange;
+            background-color: $light-orange;
+            color: $primary-orange;
+        }
+    }
+
+    // 3. 다음 액션 버튼 
+    &.button-next-action {
+        border-radius: 36px;
+        border-color: $color-border-default;
+        background-color: $color-white;
+        color: $color-text-sub;
+
+        font-size: 16px;
+        font-weight: 600;
+        letter-spacing: 0.384px;
+
+        // '다음' 혹은 '제출하기'가 활성화된 상태
+        &.active {
+            background-color: $color-primary;
+            border-color: $color-primary;
+            color: $color-text-on-primary;
+        }
+
+        &:active {
+            transform: scale(0.97); // 터치 시 눌리는 효과
+        }
+
+        &.button-md {
+            height: 60px;
+            min-height: 60px;
+        }
+    }
+
+    // 4. 이전 액션 버튼
+    &.button-prev-action {
+        border-radius: 30px;
+
+        font-size: 18px;
+        font-weight: 600;
+
+        background-color: $gray-background;
+    }
+
+    // 5. 카카오 공유 버튼 
+    &.button-kakao {
+        border-radius: 12px;
+        background-color: $color-kakao;
+        border-color: $color-kakao;
+        color: $color-text-primary;
+        font-size: 14px;
+        font-weight: 600;
+        letter-spacing: 0.336px;
+
+        &.button-md {
+            height: 58px;
+            min-height: 58px;
+        }
+    }
+
+    // 6. 응답 입력 버튼
+    &.button-input-response {
+        border-radius: 12px;
+        border-color: $color-primary;
+        background-color: $color-primary;
+        color: $color-text-on-primary;
+
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 0.24px;
+    }
+
+
+
+    // survey 부분 버튼 크기 조절
+    &.button-lg {
+        width: 100%;
+        height: 70px;
+        min-height: 70px;
+    }
+
+    &.button-md {
+        width: 100%;
+        height: 56px;
+        min-height: 56px;
+    }
+
+    &.button-auto-sm {
+        display: inline-flex;
+        padding: 0 16px;
+        width: auto;
+        height: 34px;
+        min-height: 34px;
+    }
+
+    &.button-fixed-sm {
+        display: inline-flex;
+    }
+}
