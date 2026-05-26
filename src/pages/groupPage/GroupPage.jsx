@@ -16,6 +16,7 @@ function GroupPage() {
         isLoading,
         copyLink,
         shareKakao,
+        handleMoveSurveyPage,
         handleStartAnalysis,
     } = useGroup();
 
@@ -41,9 +42,7 @@ function GroupPage() {
             <GroupInputProgress
                 myId={user?.memberId}
                 memberList={memberList}
-                handleMovePage={() => {
-                    console.log("survey 페이지로 이동");
-                }}
+                handleMovePage={handleMoveSurveyPage}
             />
             <div className={style["next-button-container"]}>
                 <Button

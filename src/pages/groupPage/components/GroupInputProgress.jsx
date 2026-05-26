@@ -76,7 +76,7 @@ function GroupInputProgress({myId, memberList, handleMovePage}) {
                                     type="input-response"
                                     size="button-fixed-sm"
                                     content={buttonContent}
-                                    onClick={() => handleMovePage("SurveyPage")}
+                                    onClick={() => handleMovePage()}
                                 />
                             );
                         }

@@ -4,9 +4,10 @@ import { STORAGE_KEY } from "@/constants/storageKey";
 import { API_URL } from "@/constants/apiURL";
 import { SURVEY_API_ERROR_MESSAGE } from "@/constants/surveyApiErrorMessage";
 
-export async function postSurveyData(surveyData) {
-    const memberId = getStoredJson(STORAGE_KEY.MEMBER).memberId;
-    const tripGroupId = getStoredJson(STORAGE_KEY.TRIP_GROUP).tripGroupId;
+export async function postSurveyData(surveyData, inviteCode) {
+    const data = getStoredJson(inviteCode ?? null);
+    const memberId = data?.id ?? data?.memberId ?? null;
+    const tripGroupId = data.tripGroupId;
     
     try {
         // URL 및 설문조사 데이터 조회 (테스트 후 삭제)

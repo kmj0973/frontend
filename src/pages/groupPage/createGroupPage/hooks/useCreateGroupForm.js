@@ -20,8 +20,10 @@ import {
 } from '@/utils/groupFormUtils.js';
 import { createGroup } from '@/apis/groupApi';
 import { storage } from '@/utils/storage';
+import { replace, useNavigate } from 'react-router-dom';
 
 export const useCreateGroupForm = () => {
+  const navigate = useNavigate();
   // 폼 payload 전체를 단일 상태로 관리합니다.
   const [form, setForm] = useState(getInitialFormState);
   // 저장된 날짜가 있으면 해당 월부터 캘린더를 열 수 있게 초기 월을 맞춥니다.
@@ -119,12 +121,14 @@ export const useCreateGroupForm = () => {
         tripGroupId: result.tripGroupId,
         memberId: result.leaderMemberId,
         nickname: result.leaderNickname,
+        role: 'LEADER',
       });
 
       //세션스토리지 값 삭제
       sessionStorage.removeItem(SESSION_KEY);
 
       //여기에 진행현황 페이지 라우팅 코드
+      navigate(`/group/${result.inviteCode}`, replace);
     } catch (error) {
       console.error(error);
     } finally {

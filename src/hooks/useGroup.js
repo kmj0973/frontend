@@ -2,13 +2,9 @@ import { useEffect, useState } from "react";
 import { fetchGroupsData } from "@/apis/tripGroupsApi";
 import { shareInviteLink } from "@/utils/kakaoShare";
 import { getStoredJson } from "@/utils/getStorage";
-import { STORAGE_KEY } from "@/constants/storageKey";
-import { URL_PARAM } from "@/constants/urlParam";
 import { GROUP_BUTTON_TEXT, GROUP_POLLING_INTERVAL, GROUP_INVITE_URL, GROUP_CONSOLE_MESSAGE, GROUP_ALERT_MESSAGE } from "@/constants/groupHooksConstants";
 import { GROUP_STATUS, GROUP_ROLE } from "@/constants/groupStatus";
-
-// 테스트 완료 후 삭제
-import { GROUP_TEST_INVITE_CODE } from "@/constants/groupHooksConstants";
+import { useNavigate, useParams } from "react-router-dom";
 
 function isMemberSurveyCompleted(member) {
     if (member.surveyCompleted === true) return true;
@@ -16,12 +12,17 @@ function isMemberSurveyCompleted(member) {
 }
 
 export function useGroup() {
-    const user = getStoredJson(STORAGE_KEY.MEMBER);
-    const group = getStoredJson(STORAGE_KEY.TRIP_GROUP);
     // 초대 코드가 없는 경우 주소창의 초대 코드 사용, 없으면 로컬 스토리지의 초대 코드 사용
     // 현재는 테스트 초대코드 사용 (추후 삭제)
-    const inviteCode = new URLSearchParams(window.location.search).get(URL_PARAM.INVITE_CODE) ?? GROUP_TEST_INVITE_CODE; 
-    const tripGroupId = group?.tripGroupId ?? group?.id ?? null; 
+    const { inviteCode } = useParams(); 
+    const navigate = useNavigate();
+
+    const data = getStoredJson(inviteCode ?? null);
+    const user = {
+        memberId: data?.id ?? data?.memberId ?? null,
+        role: data?.role ?? null,
+    }
+    const tripGroupId = data?.tripGroupId ?? null; 
 
     const [groupInfo, setGroupInfo] = useState(null);
     const [memberList, setMemberList] = useState(null);
@@ -126,6 +127,13 @@ export function useGroup() {
         });
     }
 
+    // 설문조사 페이지로 이동 (다음 버튼 클릭 시 실행)
+    const handleMoveSurveyPage = () => {
+        if (inviteCode) {
+            navigate(`/survey/${inviteCode}`);
+        }
+    }
+
     // AI 분석 시작 (다음 버튼 클릭 시 실행 / 아직 미구현)
     const handleStartAnalysis = () => {
         if (!isToNext) return;
@@ -143,6 +151,7 @@ export function useGroup() {
         isLoading,
         copyLink,
         shareKakao,
+        handleMoveSurveyPage,
         handleStartAnalysis,
     };
 }

@@ -8,6 +8,7 @@ import {
 } from '@/constants/surveyOptions';
 import { SURVEY_FORM_NAME } from '@/constants/surveyFormName';
 import { STORAGE_KEY } from '@/constants/storageKey';
+import { useNavigate, useParams } from 'react-router-dom';
 
 // Q4 슬라이더 값 → N * 10000 원 형식
 function formatBudget(manWon) {
@@ -116,6 +117,12 @@ export function useSurvey() {
     // 태그 버튼 선택 상태 관리
     const [selectedTags, setSelectedTags] = useState([]);
 
+    // 라우터 정의
+    const navigate = useNavigate();
+    
+    // 초대 코드 정의
+    const { inviteCode } = useParams();
+
     useEffect(() => {
         const restored = restoreSurveyFromLocalStorage();
         setNowForm(restored.nowForm);
@@ -200,10 +207,17 @@ export function useSurvey() {
             const submitResult = buildSurveySubmit(formData);
 
             // API 제출
-            postSurveyData(submitResult);
+            postSurveyData(submitResult, inviteCode);
+
+            // 저장된 설문조사 정보 삭제
+            setStoredJson(STORAGE_KEY.SURVEY_FORM(SURVEY_FORM_NAME.Q1), null);
+            setStoredJson(STORAGE_KEY.SURVEY_FORM(SURVEY_FORM_NAME.Q2), null);
+            setStoredJson(STORAGE_KEY.SURVEY_FORM(SURVEY_FORM_NAME.Q3), null);
+            setStoredJson(STORAGE_KEY.SURVEY_FORM(SURVEY_FORM_NAME.Q4), null);
+            setStoredJson(STORAGE_KEY.SURVEY_FORM(SURVEY_FORM_NAME.Q5), null);
 
             // 페이지 이동 (추후 구현)
-            // navigate('/survey/result');
+            navigate(`/analysis/${inviteCode}`);
             
             return;
         }

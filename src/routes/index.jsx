@@ -19,7 +19,7 @@ const router = createBrowserRouter([
         element: <MainPage />,
       },
       {
-        path: '/analysis',
+        path: '/analysis/:inviteCode',
         element: <AnalysisPage />,
       },
       {
@@ -27,12 +27,12 @@ const router = createBrowserRouter([
         element: <ResultsPage />,
       },
       { path: '/results/e/:inviteCode', element: <ResultFallback /> },
-      { path: '/survey', element: <SurveyPage /> },
+      { path: '/survey/:inviteCode', element: <SurveyPage /> },
       { path: '/group/create/:step', element: <CreateGroupPage /> },
       { path: '/group/join/:inviteCode', element: <JoinGroupPage /> },
       { path: '/final/:inviteCode', element: <FinalPage /> },
       {
-        path: '/group',
+        path: '/group/:inviteCode',
         element: <GroupPage />
       }
     ],
