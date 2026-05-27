@@ -12,3 +12,18 @@ export const joinGroup = async (invieCode, nickname) => {
   );
   return response.data;
 };
+
+export const postVotes = async (planId, tripGroupId, userId) => {
+  const response = await instance.post(`/v1/recommend-plans/${planId}/votes`, {
+    tripGroupId,
+    userId,
+  });
+  return response.data;
+};
+
+export const getVotes = async (tripGroupId) => {
+  const response = await instance.get(
+    `v1/recommend-plans/api/v1/trip-groups/${tripGroupId}/votes`,
+  );
+  return response.data;
+};

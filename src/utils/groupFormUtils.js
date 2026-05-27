@@ -4,7 +4,6 @@ import {
   TRIP_LENGTH_BY_PERIOD,
 } from '../pages/groupPage/createGroupPage/constants/createGroupFormConstants';
 
-const HANGUL_CHARACTER_PATTERN = /[가-힣]/g;
 const NICKNAME_ALLOWED_PATTERN = /^[A-Za-z가-힣]+$/;
 
 // 그룹 생성 폼의 기본 payload 형태를 반환합니다.
@@ -65,13 +64,7 @@ export const createTravelRangeFromForm = (form) => {
 export const hasAtLeastTwoHangulCharacters = (value) => {
   const normalizedValue = value.trim();
 
-  if (!normalizedValue) {
-    return false;
-  }
-
-  const hangulCharacters =
-    normalizedValue.match(HANGUL_CHARACTER_PATTERN) ?? [];
-  return hangulCharacters.length >= 2;
+  return /^[가-힣]+$/.test(normalizedValue) && normalizedValue.length >= 2;
 };
 
 // 닉네임이 2~10자이며 한글/영문만 포함하는지 검사합니다.

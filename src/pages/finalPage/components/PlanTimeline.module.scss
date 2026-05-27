@@ -1,0 +1,80 @@
+@use '@/styles/typography' as *;
+
+.timeline {
+  margin-top: 0;
+  padding: 4px 0 22px;
+  border-top: 1px solid #ece7e1;
+  opacity: 0;
+  transform: translateY(-6px);
+  transition:
+    opacity 240ms ease 40ms,
+    transform 300ms cubic-bezier(0.22, 1, 0.36, 1) 40ms;
+}
+
+.timeline--open {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.timeline-day + .timeline-day {
+  margin-top: 12px;
+}
+
+.timeline-day-label {
+  margin: 12px 0 10px;
+  color: var(--color-text-strong);
+  @include text-b-caption;
+  font-weight: var(--font-weight-semibold);
+}
+
+.timeline-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.timeline-item {
+  position: relative;
+  display: grid;
+  grid-template-columns: 14px 42px 1fr;
+  align-items: start;
+  column-gap: 12px;
+  min-height: 58px;
+}
+
+.timeline-dot {
+  position: relative;
+  z-index: 1;
+  width: 12px;
+  height: 12px;
+  margin-top: 2px;
+  border-radius: 50%;
+  background: var(--color-brand-500);
+}
+
+.timeline-line {
+  position: absolute;
+  top: 14px;
+  left: 5px;
+  width: 2px;
+  height: calc(100% - 2px);
+  background: color-mix(in srgb, var(--color-brand-300) 78%, white);
+}
+
+.timeline-time {
+  color: var(--color-text);
+  @include text-c-meta;
+}
+
+.timeline-copy {
+  p {
+    color: var(--color-text-strong);
+    @include text-c-card-title;
+  }
+}
+
+.timeline-note {
+  display: block;
+  margin-top: 1px;
+  color: var(--color-text-muted);
+  @include text-c-meta;
+}

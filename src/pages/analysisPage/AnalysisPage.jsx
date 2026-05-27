@@ -7,6 +7,7 @@ const AnalysisPage = () => {
     <div className={styles['analysis-page']}>
       <AnalysisHero />
       <AnalysisStepList />
+      {/* <AnalysisFallbackDialog /> */}
     </div>
   );
 };

@@ -1,8 +1,9 @@
-import { topPlans } from '@/constants/topPlans';
-import styles from './PlanList.module.scss';
 import { useState } from 'react';
+import { topPlans as fallbackPlans } from '@/constants/topPlans';
+import { storage } from '@/utils/storage';
+import { postVotes } from '@/apis/groupApi';
+import styles from './PlanList.module.scss';
 
-// 플랜 토글 아이콘
 const ChevronIcon = ({ open = false }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -22,12 +23,10 @@ const ChevronIcon = ({ open = false }) => (
   </svg>
 );
 
-// 플랜 태그 컴포넌트
 const Tag = ({ tone, children }) => (
   <span className={`${styles.tag} ${styles[`tag-${tone}`]}`}>{children}</span>
 );
 
-// 플랜 일정 타임라인 컴포넌트
 const PlanTimeline = ({ sections }) => (
   <div className={styles.timeline}>
     {sections.map((section) => (
@@ -36,7 +35,7 @@ const PlanTimeline = ({ sections }) => (
         <div className={styles['timeline-list']}>
           {section.items.map((item, index) => (
             <div
-              key={`${section.label}-${item.time}`}
+              key={`${section.label}-${item.time}-${item.title}`}
               className={styles['timeline-item']}
             >
               {index !== section.items.length - 1 ? (
@@ -58,7 +57,15 @@ const PlanTimeline = ({ sections }) => (
   </div>
 );
 
-const PlanList = () => {
+const PlanList = ({
+  topPlans = fallbackPlans,
+  voteList = [],
+  setVoteList,
+  tripGroupId,
+  memberId,
+  memberLength,
+}) => {
+  const voting = storage.get('voting') || false;
   const [openPlans, setOpenPlans] = useState(() =>
     topPlans.reduce((acc, plan, index) => {
       acc[plan.title] = index === 0 || Boolean(plan.expanded);
@@ -73,10 +80,33 @@ const PlanList = () => {
     }));
   };
 
+  const handleVoting = async (planId) => {
+    if (voting) {
+      alert('이미 투표하셨습니다.');
+      return;
+    }
+
+    const response = await postVotes(planId, tripGroupId, memberId);
+    console.log(response);
+
+    if (typeof setVoteList === 'function') {
+      setVoteList((prev) =>
+        prev.map((vote) =>
+          vote.planId === planId
+            ? { ...vote, voteCount: vote.voteCount + 1 }
+            : vote,
+        ),
+      );
+    }
+
+    storage.set('voting', true);
+  };
+
   return (
     <div className={styles['collapsed-plan-list']}>
       {topPlans.map((plan, index) => {
         const isOpen = openPlans[plan.title];
+        const voteCount = voteList[index]?.voteCount ?? 0;
 
         return (
           <article
@@ -126,12 +156,15 @@ const PlanList = () => {
                 <div className={styles['plan-actions']}>
                   <button
                     type="button"
+                    onClick={() => handleVoting(index + 1)}
                     className={styles['vote-button']}
                     tabIndex={isOpen ? 0 : -1}
                   >
                     이 플랜 투표하기
                   </button>
-                  <p className={styles['vote-meta']}>{plan.voteLabel}</p>
+                  <p className={styles['vote-meta']}>
+                    현재 {voteCount}표 · 총 {memberLength}명 중
+                  </p>
                 </div>
               </div>
             </div>

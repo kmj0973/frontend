@@ -10,9 +10,9 @@ export const PreviousStepSvg = () => {
       <path
         d="M11 1L1 11.2041L11 21"
         stroke="#848B9C"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   );
