@@ -3,10 +3,10 @@ import { replace, useNavigate, useParams } from 'react-router-dom';
 import { getAnalysisResults } from '@/apis/analysisApi';
 import { getVotes } from '@/apis/groupApi';
 import { storage } from '@/utils/storage';
+import { fetchGroupsData } from '@/apis/tripGroupsApi';
 import styles from './ResultsPage.module.scss';
 import PlanList from './components/PlanList';
 import ConflictList from './components/ConflictList';
-import { fetchGroupsData } from '@/apis/tripGroupsApi';
 
 const ResultsPage = () => {
   const navigate = useNavigate();
@@ -19,14 +19,19 @@ const ResultsPage = () => {
 
   useEffect(() => {
     const fetchGroupInfo = async () => {
-      const response = await fetchGroupsData(tripGroupId, inviteCode);
-      console.log(response);
-      setGroupInfo({
-        groupName: response.groupInfo.name,
-        startDate: response.groupInfo.startDate.split('-').join('.'),
-        endDate: response.groupInfo.endDate.split('-').join('.'),
-        memberLength: response.memberList.length,
-      });
+      try {
+        const response = await fetchGroupsData(tripGroupId, inviteCode);
+        console.log(response);
+        setGroupInfo({
+          groupName: response.groupInfo.name,
+          startDate: response.groupInfo.startDate.split('-').join('.'),
+          endDate: response.groupInfo.endDate.split('-').join('.'),
+          memberLength: response.memberList.length,
+        });
+      } catch (err) {
+        console.log('그룹 정보 가져오기 실패', err);
+        setGroupInfo({});
+      }
     };
 
     fetchGroupInfo();
@@ -39,7 +44,7 @@ const ResultsPage = () => {
         const rawResult = response?.result;
         const parsedResult =
           typeof rawResult === 'string' ? JSON.parse(rawResult) : rawResult;
-        console.log(rawResult);
+
         setConflictCards(parsedResult?.conflictCards ?? []);
         setPlans(parsedResult?.topPlans ?? []);
         if (

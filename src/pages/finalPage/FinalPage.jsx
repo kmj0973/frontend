@@ -46,7 +46,6 @@ const FinalPage = () => {
         const parsedResult =
           typeof rawResult === 'string' ? JSON.parse(rawResult) : rawResult;
 
-        console.log(rawResult);
         setPlans(parsedResult?.topPlans ?? []);
       } catch (err) {
         console.log('결과 가져오기 실패', err);

@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import Button from '../button/Button';
 import styles from './ResultFallback.module.scss';
 
@@ -7,7 +8,9 @@ const CONFLICT_ITEMS = [
   '당일치기를 원하지만 새벽 출발은 어려워요',
 ];
 
-const ResultFallback = ({ onRetry, onRelaxConditions }) => {
+const ResultFallback = () => {
+  const navigate = useNavigate();
+
   return (
     <section className={styles['result-fallback']}>
       <div className={styles['result-fallback__content']}>
@@ -35,10 +38,10 @@ const ResultFallback = ({ onRetry, onRelaxConditions }) => {
       </div>
 
       <div className={styles['result-fallback__actions']}>
-        <Button type="button" variant="muted" onClick={onRetry}>
+        <Button type="button" variant="muted" onClick={() => navigate('/')}>
           멤버 응답 다시 받기
         </Button>
-        <Button type="button" variant="brand" onClick={onRelaxConditions}>
+        <Button type="button" variant="brand" onClick={() => navigate('/')}>
           조건 완화해서 추천 받기
         </Button>
       </div>

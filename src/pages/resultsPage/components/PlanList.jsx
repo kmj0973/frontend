@@ -86,20 +86,24 @@ const PlanList = ({
       return;
     }
 
-    const response = await postVotes(planId, tripGroupId, memberId);
-    console.log(response);
+    try {
+      const response = await postVotes(planId, tripGroupId, memberId);
+      console.log(response);
 
-    if (typeof setVoteList === 'function') {
-      setVoteList((prev) =>
-        prev.map((vote) =>
-          vote.planId === planId
-            ? { ...vote, voteCount: vote.voteCount + 1 }
-            : vote,
-        ),
-      );
+      if (typeof setVoteList === 'function') {
+        setVoteList((prev) =>
+          prev.map((vote) =>
+            vote.planId === planId
+              ? { ...vote, voteCount: vote.voteCount + 1 }
+              : vote,
+          ),
+        );
+      }
+
+      storage.set('voting', true);
+    } catch (err) {
+      console.log('투표 요청 실패', err);
     }
-
-    storage.set('voting', true);
   };
 
   return (

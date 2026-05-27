@@ -27,6 +27,20 @@
   }
 }
 
+@keyframes finalStepFloat {
+  0% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-4px);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
+}
+
 .analysis-step-item {
   display: flex;
   align-items: center;
@@ -184,4 +198,8 @@
   .analysis-step-item-status {
     color: #ff822e;
   }
+}
+
+.final-step-active {
+  animation: finalStepFloat 1.4s ease-in-out infinite;
 }

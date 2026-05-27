@@ -127,8 +127,8 @@ export const AnalysisProcessActiveSvg = () => {
           y2="50"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#FFD9C0" />
-          <stop offset="1" stop-color="#FF822E" />
+          <stop stopColor="#FFD9C0" />
+          <stop offset="1" stopColor="#FF822E" />
         </linearGradient>
       </defs>
     </svg>
