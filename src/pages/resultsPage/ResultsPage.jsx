@@ -7,6 +7,7 @@ import { fetchGroupsData } from '@/apis/tripGroupsApi';
 import styles from './ResultsPage.module.scss';
 import PlanList from './components/PlanList';
 import ConflictList from './components/ConflictList';
+import { GROUP_HEADER_TEXT } from '@/constants/groupPageConstants';
 
 const ResultsPage = () => {
   const navigate = useNavigate();
@@ -24,6 +25,7 @@ const ResultsPage = () => {
         console.log(response);
         setGroupInfo({
           groupName: response.groupInfo.name,
+          tripLength: response.groupInfo.tripLength,
           startDate: response.groupInfo.startDate.split('-').join('.'),
           endDate: response.groupInfo.endDate.split('-').join('.'),
           memberLength: response.memberList.length,
@@ -104,8 +106,11 @@ const ResultsPage = () => {
             <p className={styles['results-hero-subtitle']}>AI 분석 결과</p>
             <h1>{groupInfo.groupName}</h1>
             <p className={styles['results-hero-meta']}>
-              {groupInfo.startDate} - {groupInfo.endDate} 총{' '}
-              {groupInfo.memberLength}명
+              {GROUP_HEADER_TEXT[groupInfo.tripLength]}
+              {groupInfo.startDate && groupInfo
+                ? `${groupInfo.startDate} - ${groupInfo.endDate}`
+                : ''}
+              ·{groupInfo.memberLength}명
             </p>
           </section>
 
