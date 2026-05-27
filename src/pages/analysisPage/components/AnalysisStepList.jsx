@@ -11,11 +11,12 @@ const AnalysisStepList = ({ onError }) => {
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(1);
   const { inviteCode } = useParams();
-  const { tripGroupId } = storage.get(inviteCode);
+  const { tripGroupId, role } = storage.get(inviteCode);
   const hasStartedAnalysisRef = useRef(false);
 
   useEffect(() => {
-    if (!tripGroupId || hasStartedAnalysisRef.current) return;
+    if (!tripGroupId || hasStartedAnalysisRef.current || role !== 'LEADER')
+      return;
 
     hasStartedAnalysisRef.current = true;
 
@@ -32,7 +33,7 @@ const AnalysisStepList = ({ onError }) => {
     };
 
     startAnalysis();
-  }, [tripGroupId, onError]);
+  }, [tripGroupId, role, onError]);
 
   useEffect(() => {
     if (!inviteCode || !tripGroupId) return;

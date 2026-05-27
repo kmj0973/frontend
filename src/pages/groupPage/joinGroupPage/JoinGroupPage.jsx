@@ -2,6 +2,10 @@ import Button from '@/components/common/button/Button';
 import NicknameStep from '../createGroupPage/components/NicknameStep';
 import styles from './JoinGroupPage.module.scss';
 import { useJoinGroupForm } from './hooks/useJoinGroupForm';
+import { useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { storage } from '@/utils/storage';
+import { fetchGroupsData } from '@/apis/tripGroupsApi';
 
 const JoinGroupPage = () => {
   const {
@@ -12,6 +16,33 @@ const JoinGroupPage = () => {
     nicknameVariant,
     handleSubmit,
   } = useJoinGroupForm();
+  const { inviteCode } = useParams();
+  const navigate = useNavigate();
+  const isMember = storage.get(inviteCode) ? true : false;
+
+  useEffect(() => {
+    if (!isMember) return;
+
+    const fetchGroupStatus = async () => {
+      const { tripGroupId } = storage.get(inviteCode);
+      const response = await fetchGroupsData(tripGroupId);
+      const status = response.groupInfo.status;
+
+      if (status == 'GATHERING') {
+        navigate(`/group/${inviteCode}`);
+      } else if (status == 'ANALYZING') {
+        navigate(`/analysis/${inviteCode}`);
+      } else if (status == 'VOTING') {
+        navigate(`/reuslts/${inviteCode}`);
+      } else if (status == 'COMPLETED') {
+        navigate(`/final/${inviteCode}`);
+      } else {
+        navigate('/');
+      }
+    };
+
+    fetchGroupStatus();
+  }, [inviteCode, isMember, navigate]);
 
   return (
     <form onSubmit={handleSubmit} className={styles['create-group-page']}>
