@@ -1,4 +1,5 @@
 import image from "@/assets/public/KakaoFeedImage.jpg";
+import { GROUP_INVITE_URL } from "@/constants/groupHooksConstants";
 
 export function initKakao() {
     const key = import.meta.env.VITE_KAKAO_JS_KEY;
@@ -19,7 +20,7 @@ export function initKakao() {
 export function shareInviteLink({ inviteCode, groupName }) {
     if (!initKakao()) return;
 
-    const inviteUrl = `${window.location.origin}/invite/${inviteCode}`;
+    const inviteUrl = GROUP_INVITE_URL(inviteCode);
     const imageUrl = new URL(image, window.location.origin).href;
 
     window.Kakao.Share.sendDefault({

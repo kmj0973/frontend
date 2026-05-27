@@ -4,25 +4,12 @@ import ParticipantImg from "@/assets/Participant.svg"
 import Button from "@/components/common/Button"
 import { GROUP_INPUT_PROGRESS_TEXT } from "@/constants/groupPageConstants";
 import { GROUP_ROLE } from "@/constants/groupStatus";
-
-// 멤버 설문 완료 여부 확인
-function isMemberSurveyCompleted(member) {
-    return member.surveyCompleted === true || member.surveyCompleted === 1;
-}
-
-// 본인 여부 확인
-function isSameMemberId(memberId, myId) {
-    if (myId == null || memberId == null) {
-        return false;
-    }
-    return Number(memberId) === Number(myId);
-}
+import { isMemberSurveyCompleted, isSameMemberId } from "@/hooks/useGroup";
 
 function GroupInputProgress({myId, memberList, handleMovePage}) {
     const progressInfoText = GROUP_INPUT_PROGRESS_TEXT.NOW;
     const members = Array.isArray(memberList) ? memberList : [];
     const completeMembers = members.filter(
-        // 객체 프로퍼티 명은 DB 내용 참고
         (member) => isMemberSurveyCompleted(member)
     );
     const progressCount = `${completeMembers.length}/${members.length}`;

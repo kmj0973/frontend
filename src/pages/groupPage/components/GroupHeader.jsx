@@ -17,7 +17,7 @@ const formatDate = (dateInput) => {
 };
 
 function GroupHeader({groupName, tripLength, startDate = null, endDate = null}) {
-    const validDuration = startDate != null && endDate != null;
+    const validDuration = startDate != "" && endDate != "";
 
     let duration = "";
     if (validDuration) {

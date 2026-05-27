@@ -3,7 +3,7 @@ export const GROUP_TEST_INVITE_CODE = "test1234abcd";
 
 export const GROUP_POLLING_INTERVAL = 3000;
 
-export const GROUP_INVITE_URL = (inviteCode) => `${window.location.origin}/invite/${inviteCode}`;
+export const GROUP_INVITE_URL = (inviteCode) => `${window.location.origin}/group/join/${inviteCode}`;
 
 export const GROUP_BUTTON_TEXT = {
     NOT_READY: "모든 친구가 입력해야 시작할 수 있어요",

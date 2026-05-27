@@ -1,6 +1,5 @@
 import { instance } from "@/apis/instance";
 import { getStoredJson } from "@/utils/getStorage";
-import { STORAGE_KEY } from "@/constants/storageKey";
 import { API_URL } from "@/constants/apiURL";
 import { SURVEY_API_ERROR_MESSAGE } from "@/constants/surveyApiErrorMessage";
 

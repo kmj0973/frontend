@@ -1,4 +1,4 @@
-export const GROUP_HEADER_TRIP_DAYS = ["DAY_TRIP", "ONE_NIGHT", "TWO_NIGHTS", "THREE_NIGHTS"];
+export const GROUP_HEADER_TRIP_DAYS = ["DAY_TRIP", "ONE_NIGHT", "TWO_NIGHTS", "THREE_NIGHTS_PLUS"];
 
 export const GROUP_HEADER_TEXT = {
     // 여행 기간 내용

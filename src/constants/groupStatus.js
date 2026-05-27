@@ -1,7 +1,9 @@
 export const GROUP_STATUS = {
     GATHERING: "GATHERING",
+    ANALYZING: "ANALYZING",
     VOTING: "VOTING",
     COMPLETED: "COMPLETED",
+    FAILED: "FAILED",
 };
 
 export const GROUP_ROLE = {

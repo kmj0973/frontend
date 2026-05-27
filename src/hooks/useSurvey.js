@@ -163,7 +163,7 @@ export function useSurvey() {
             setIsError(false);
 
             // 다음 버튼 활성화 여부 판단 (선택된 버튼이 있는 경우 활성화)
-            setIsToNext(isToNextEnabledForForm(nowForm, updatedList, q2SelectedList));
+            setIsToNext(updatedList.length > 0);
 
             return updatedList;
         });
@@ -209,15 +209,16 @@ export function useSurvey() {
             // API 제출
             postSurveyData(submitResult, inviteCode);
 
-            // 저장된 설문조사 정보 삭제
-            setStoredJson(STORAGE_KEY.SURVEY_FORM(SURVEY_FORM_NAME.Q1), null);
-            setStoredJson(STORAGE_KEY.SURVEY_FORM(SURVEY_FORM_NAME.Q2), null);
-            setStoredJson(STORAGE_KEY.SURVEY_FORM(SURVEY_FORM_NAME.Q3), null);
-            setStoredJson(STORAGE_KEY.SURVEY_FORM(SURVEY_FORM_NAME.Q4), null);
-            setStoredJson(STORAGE_KEY.SURVEY_FORM(SURVEY_FORM_NAME.Q5), null);
+            // 저장된 설문조사 정보 삭제 및 현재 폼 위치 초기화
+            setStoredJson(STORAGE_KEY.SURVEY_NOW_FORM, SURVEY_FORM_NAME.Q1);
+            for (const key in SURVEY_FORM_NAME) {
+                if (Object.prototype.hasOwnProperty.call(SURVEY_FORM_NAME, key)) {
+                    setStoredJson(STORAGE_KEY.SURVEY_FORM(SURVEY_FORM_NAME[key]), null);
+                }
+            }
 
-            // 페이지 이동 (추후 구현)
-            navigate(`/analysis/${inviteCode}`);
+            // 그룹 진행 현황 페이지로 이동
+            navigate(`/group/${inviteCode}`, { state: { surveySubmitted: true } });
             
             return;
         }

@@ -1,14 +1,29 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { fetchGroupsData } from "@/apis/tripGroupsApi";
 import { shareInviteLink } from "@/utils/kakaoShare";
 import { getStoredJson } from "@/utils/getStorage";
 import { GROUP_BUTTON_TEXT, GROUP_POLLING_INTERVAL, GROUP_INVITE_URL, GROUP_CONSOLE_MESSAGE, GROUP_ALERT_MESSAGE } from "@/constants/groupHooksConstants";
 import { GROUP_STATUS, GROUP_ROLE } from "@/constants/groupStatus";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 
-function isMemberSurveyCompleted(member) {
-    if (member.surveyCompleted === true) return true;
-    return false;
+export function isMemberSurveyCompleted(member) {
+    return member.surveyCompleted === true || member.surveyCompleted === 1;
+}
+
+export function isSameMemberId(memberId, myId) {
+    if (myId == null || memberId == null) {
+        return false;
+    }
+    return Number(memberId) === Number(myId);
+}
+
+function applyMySurveyCompleted(memberList, memberId) {
+    if (!Array.isArray(memberList)) return memberList;
+    return memberList.map((member) =>
+        isSameMemberId(member.memberId, memberId)
+            ? { ...member, surveyCompleted: true }
+            : member
+    );
 }
 
 export function useGroup() {
@@ -16,6 +31,7 @@ export function useGroup() {
     // 현재는 테스트 초대코드 사용 (추후 삭제)
     const { inviteCode } = useParams(); 
     const navigate = useNavigate();
+    const location = useLocation();
 
     const data = getStoredJson(inviteCode ?? null);
     const user = {
@@ -28,12 +44,43 @@ export function useGroup() {
     const [memberList, setMemberList] = useState(null);
     const [isToNext, setIsToNext] = useState(false);
     const [nextButtonText, setNextButtonText] = useState(GROUP_BUTTON_TEXT.NOT_READY);
+    
+    const [startAnalysis, setStartAnalysis] = useState(false);
+    const startAnalysisRef = useRef(false);
+
+    const memberListRef = useRef(memberList);
+    memberListRef.current = memberList;
+
+    const analysisTimersRef = useRef({ intervalId: null, timeoutId: null });
+
+    const setAnalysisStarting = (value) => {
+        startAnalysisRef.current = value;
+        setStartAnalysis(value);
+    };
 
     useEffect(() => {
-        // 백엔드 요구사항 : 그룹 상태가 VOTING인 경우 데이터 조회 불가능
-        if (groupInfo && groupInfo.status === GROUP_STATUS.VOTING) {
-            console.log(GROUP_CONSOLE_MESSAGE.VOTING_STOP_MESSAGE);
-            return;
+        // 그룹 진행 정보 상태에 따라 타 페이지로 라우팅
+        if (groupInfo?.status) {
+            if (groupInfo.status === GROUP_STATUS.ANALYZING) {
+                navigate(`/analysis/${inviteCode}`);
+                return;
+            } else if (groupInfo.status === GROUP_STATUS.VOTING) {
+                navigate(`/results/${inviteCode}`);
+                return;
+            }  else if (groupInfo.status === GROUP_STATUS.FAILED) {
+                navigate(`/results/e/${inviteCode}`);
+                return;
+            } else if (groupInfo.status === GROUP_STATUS.COMPLETED) {
+                navigate(`/final/${inviteCode}`);
+                return;
+            }
+        }
+
+        const surveySubmitted = location.state?.surveySubmitted === true;
+
+        if (surveySubmitted) {
+            setMemberList((prev) => applyMySurveyCompleted(prev, user.memberId));
+            navigate(location.pathname, { replace: true, state: {} });
         }
 
         const loadGroupData = async () => {
@@ -56,16 +103,26 @@ export function useGroup() {
 
                 // 정규화된 그룹 데이터 설정
                 const { memberList: parsedMemberListData, groupInfo: parsedInvitedGroupData } = result;
+                const membersToSet = surveySubmitted
+                    ? applyMySurveyCompleted(parsedMemberListData, user.memberId)
+                    : parsedMemberListData;
 
                 // 그룹 정보 설정
                 setGroupInfo(parsedInvitedGroupData);
+
                 // 멤버 목록 설정
-                setMemberList(parsedMemberListData);
+                setMemberList(membersToSet);
 
                 // 모든 멤버의 설문 완료 여부 확인
                 const allSurveyCompleted =
-                    parsedMemberListData.length ===
-                    parsedMemberListData.filter((member) => isMemberSurveyCompleted(member)).length;
+                    membersToSet.length ===
+                    membersToSet.filter((member) => isMemberSurveyCompleted(member)).length;
+
+                // 분석 시작 대기/진행 중에는 멤버·그룹 정보만 갱신 (버튼 텍스트는 유지)
+                if (startAnalysisRef.current) {
+                    console.log("현재 분석중입니다.");
+                    return;
+                }
 
                 // 모든 멤버의 설문 완료 여부 확인 결과에 따른 버튼 텍스트 설정
                 if (!allSurveyCompleted) {
@@ -90,16 +147,16 @@ export function useGroup() {
             }
         };
 
-        // 그룹 정보가 없는 경우 그룹 데이터 조회
-        if (groupInfo === null) {
+        // 그룹 정보가 없거나 설문 완료 여부에 따라 그룹 데이터 조회
+        if (groupInfo === null || surveySubmitted) {
             loadGroupData();
         } 
         // 백엔드 요구사항 : 그룹 정보가 있는 경우 그룹 데이터 3초마다 조회
-        else {
+        else if (groupInfo !== null) {
             const timer = setTimeout(loadGroupData, GROUP_POLLING_INTERVAL);
             return () => clearTimeout(timer);
         }
-    }, [groupInfo, inviteCode, tripGroupId, user?.role]);
+    }, [groupInfo, inviteCode, tripGroupId, user?.memberId, user?.role, location.pathname, navigate]);
 
     // 그룹 정보가 없거나 멤버 목록이 없는 경우 로딩 중
     const isLoading = !groupInfo || !Array.isArray(memberList);
@@ -121,25 +178,101 @@ export function useGroup() {
             console.error(GROUP_CONSOLE_MESSAGE.INVITE_CODE_ERROR_MESSAGE);
             return;
         }
+
         shareInviteLink({
             inviteCode,
             groupName: groupInfo?.name,
         });
     }
 
-    // 설문조사 페이지로 이동 (다음 버튼 클릭 시 실행)
+    // 설문조사 페이지로 이동 (미완료 본인만)
     const handleMoveSurveyPage = () => {
-        if (inviteCode) {
+        const me = memberList?.find(
+            (member) => isSameMemberId(member.memberId, user?.memberId)
+        );
+        
+        if (inviteCode && me && !isMemberSurveyCompleted(me)) {
             navigate(`/survey/${inviteCode}`);
         }
     }
 
-    // AI 분석 시작 (다음 버튼 클릭 시 실행 / 아직 미구현)
-    const handleStartAnalysis = () => {
-        if (!isToNext) return;
-        console.log("AI 분석 시작");
-    }
+    const clearAnalysisTimers = () => {
+        const { intervalId, timeoutId } = analysisTimersRef.current;
+        if (intervalId != null) clearInterval(intervalId);
+        if (timeoutId != null) clearTimeout(timeoutId);
+        analysisTimersRef.current = { intervalId: null, timeoutId: null };
+    };
 
+    // AI 분석 시작
+    const handleStartAnalysis = () => {
+        // 멤버 목록이 없거나 분석 가능 상태가 아닌 경우 종료
+        if (!Array.isArray(memberList) || !isToNext) return;
+
+        // 방장이 아니거나 초대 코드가 없는 경우 종료
+        if (user?.role !== GROUP_ROLE.LEADER || !inviteCode) return;
+
+        // 멤버 목록 길이 조회
+        const memberCountAtClick = memberList.length;
+
+        // 모든 멤버가 설문을 완료했는지 조회
+        const allSurveyCompletedAtClick =
+            memberCountAtClick > 0 &&
+            memberList.every((member) => isMemberSurveyCompleted(member));
+
+        if (!allSurveyCompletedAtClick) return;
+
+        // 분석 시작 대기 (폴링 시 버튼 텍스트 덮어쓰기 방지)
+        setAnalysisStarting(true);
+
+        // 타이머 초기화
+        clearAnalysisTimers();
+        setIsToNext(false);
+
+        const waitSeconds = GROUP_POLLING_INTERVAL / 1000;
+        setNextButtonText(`${waitSeconds}초 후 시작`);
+
+        let remaining = waitSeconds;
+        const intervalId = setInterval(() => {
+            remaining -= 1;
+            if (remaining > 0) {
+                setNextButtonText(`${remaining}초 후 시작`);
+            }
+        }, 1000);
+
+        const timeoutId = setTimeout(() => {
+            clearAnalysisTimers();
+
+            const currentList = memberListRef.current;
+            const currentLength = Array.isArray(currentList) ? currentList.length : 0;
+            const allSurveyCompletedNow =
+                currentLength > 0 &&
+                currentList.every((member) => isMemberSurveyCompleted(member));
+
+            if (memberCountAtClick !== currentLength) {
+                setIsToNext(allSurveyCompletedNow);
+                setNextButtonText(
+                    allSurveyCompletedNow
+                        ? GROUP_BUTTON_TEXT.LEADER_READY
+                        : GROUP_BUTTON_TEXT.NOT_READY
+                );
+                setAnalysisStarting(false);
+                return;
+            }
+
+            if (allSurveyCompletedNow) {
+                console.log(`분석 시작 상태: ${startAnalysisRef.current}`);
+                setAnalysisStarting(false);
+                navigate(`/analysis/${inviteCode}`);
+                return;
+            }
+
+            setAnalysisStarting(false);
+            setIsToNext(false);
+            setNextButtonText(GROUP_BUTTON_TEXT.NOT_READY);
+        }, GROUP_POLLING_INTERVAL);
+
+        analysisTimersRef.current = { intervalId, timeoutId };
+    };
 
     return {
         user,
