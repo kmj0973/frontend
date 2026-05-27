@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react';
 import { replace, useNavigate, useParams } from 'react-router-dom';
 import { getAnalysisResults } from '@/apis/analysisApi';
 import { getVotes } from '@/apis/groupApi';
-import { storage } from '@/utils/storage';
 import { fetchGroupsData } from '@/apis/tripGroupsApi';
+import { useStoredGroup } from '@/hooks/useStoredGroup';
 import styles from './ResultsPage.module.scss';
 import PlanList from './components/PlanList';
 import ConflictList from './components/ConflictList';
@@ -12,13 +12,15 @@ import { GROUP_HEADER_TEXT } from '@/constants/groupPageConstants';
 const ResultsPage = () => {
   const navigate = useNavigate();
   const { inviteCode } = useParams();
-  const { tripGroupId, memberId } = storage.get(inviteCode);
+  const { tripGroupId, memberId } = useStoredGroup({ redirectOnMissing: true });
   const [voteList, setVoteList] = useState([]);
   const [conflictCards, setConflictCards] = useState([]);
   const [plans, setPlans] = useState([]);
   const [groupInfo, setGroupInfo] = useState({});
 
   useEffect(() => {
+    if (!tripGroupId) return;
+
     const fetchGroupInfo = async () => {
       try {
         const response = await fetchGroupsData(tripGroupId, inviteCode);
@@ -40,6 +42,8 @@ const ResultsPage = () => {
   }, [inviteCode, tripGroupId]);
 
   useEffect(() => {
+    if (!tripGroupId) return;
+
     const fetchResults = async () => {
       try {
         const response = await getAnalysisResults(tripGroupId);
@@ -84,7 +88,7 @@ const ResultsPage = () => {
 
         if (totalVoteCount >= groupInfo.memberLength) {
           clearInterval(pollingId);
-          storage.remove('voting');
+          localStorage.removeItem('voting');
           navigate(`/final/${inviteCode}`);
         }
       } catch (err) {

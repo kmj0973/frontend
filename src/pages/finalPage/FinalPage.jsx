@@ -1,18 +1,19 @@
 import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Button from '@/components/common/button/Button';
 import celebrateSvg from '@/assets/images/celebrate.svg';
 import { getAnalysisResults } from '@/apis/analysisApi';
 import { getVotes } from '@/apis/groupApi';
 import { fetchGroupsData } from '@/apis/tripGroupsApi';
-import { storage } from '@/utils/storage';
+import { useStoredGroup } from '@/hooks/useStoredGroup';
 import styles from './FinalPage.module.scss';
 import ResultList from './components/ResultList';
 
 const FinalPage = () => {
   const navigate = useNavigate();
-  const { inviteCode } = useParams();
-  const { tripGroupId } = storage.get(inviteCode);
+  const { inviteCode, tripGroupId } = useStoredGroup({
+    redirectOnMissing: true,
+  });
   const [groupInfo, setGroupInfo] = useState({});
   const [plans, setPlans] = useState([]);
   const [voteList, setVoteList] = useState([]);

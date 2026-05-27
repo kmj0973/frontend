@@ -3,15 +3,15 @@ import { useNavigate, useParams } from 'react-router-dom';
 import styles from './AnalysisStepList.module.scss';
 import { ANALYSIS_STEPS } from '@/constants/analysisSteps';
 import { GROUP_STATUS } from '@/constants/groupStatus';
-import { storage } from '@/utils/storage';
 import { getAnalysisStatus, postAnalysis } from '@/apis/analysisApi';
+import { useStoredGroup } from '@/hooks/useStoredGroup';
 import AnalysisStepItem from './AnalysisStepItem';
 
 const AnalysisStepList = ({ onError }) => {
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(1);
   const { inviteCode } = useParams();
-  const { tripGroupId, role } = storage.get(inviteCode);
+  const { tripGroupId, role } = useStoredGroup({ redirectOnMissing: true });
   const hasStartedAnalysisRef = useRef(false);
 
   useEffect(() => {

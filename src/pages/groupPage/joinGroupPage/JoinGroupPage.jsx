@@ -3,9 +3,9 @@ import NicknameStep from '../createGroupPage/components/NicknameStep';
 import styles from './JoinGroupPage.module.scss';
 import { useJoinGroupForm } from './hooks/useJoinGroupForm';
 import { useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { storage } from '@/utils/storage';
+import { useNavigate } from 'react-router-dom';
 import { fetchGroupsData } from '@/apis/tripGroupsApi';
+import { useStoredGroup } from '@/hooks/useStoredGroup';
 
 const JoinGroupPage = () => {
   const {
@@ -16,15 +16,19 @@ const JoinGroupPage = () => {
     nicknameVariant,
     handleSubmit,
   } = useJoinGroupForm();
-  const { inviteCode } = useParams();
   const navigate = useNavigate();
-  const isMember = storage.get(inviteCode) ? true : false;
+  const { inviteCode, storedGroup, tripGroupId } = useStoredGroup();
+  const isMember = Boolean(storedGroup);
 
   useEffect(() => {
     if (!isMember) return;
 
     const fetchGroupStatus = async () => {
-      const { tripGroupId } = storage.get(inviteCode);
+      if (!tripGroupId) {
+        navigate('/', { replace: true });
+        return;
+      }
+
       const response = await fetchGroupsData(tripGroupId);
       const status = response.groupInfo.status;
 
@@ -42,7 +46,7 @@ const JoinGroupPage = () => {
     };
 
     fetchGroupStatus();
-  }, [inviteCode, isMember, navigate]);
+  }, [inviteCode, isMember, navigate, storedGroup]);
 
   return (
     <form onSubmit={handleSubmit} className={styles['create-group-page']}>
