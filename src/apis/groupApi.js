@@ -27,3 +27,8 @@ export const getVotes = async (tripGroupId) => {
   );
   return response.data;
 };
+
+export const getInviteGroupInfo = async (inviteCode) => {
+  const response = await instance.get(`/v1/trip-groups/invite/${inviteCode}`);
+  return response.data;
+};

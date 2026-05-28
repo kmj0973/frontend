@@ -117,6 +117,8 @@ const PlanList = ({
         saveStoredVote(inviteCode, tripGroupId, memberId, planId);
         alert('이미 투표가 반영된 상태예요.');
         return;
+      } else if (err?.response?.status === 500) {
+        alert('투표 멤버가 아니에요.');
       }
 
       console.log('투표 요청 실패', err);

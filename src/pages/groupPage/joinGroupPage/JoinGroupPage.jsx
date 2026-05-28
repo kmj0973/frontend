@@ -6,6 +6,8 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { fetchGroupsData } from '@/apis/tripGroupsApi';
 import { useStoredGroup } from '@/hooks/useStoredGroup';
+import { getInviteGroupInfo } from '@/apis/groupApi';
+import { storage } from '@/utils/storage';
 
 const JoinGroupPage = () => {
   const {
@@ -17,15 +19,35 @@ const JoinGroupPage = () => {
     handleSubmit,
   } = useJoinGroupForm();
   const navigate = useNavigate();
-  const { inviteCode, storedGroup, tripGroupId } = useStoredGroup();
-  const isMember = Boolean(storedGroup);
+  const { inviteCode, tripGroupId, memberId } = useStoredGroup();
 
   useEffect(() => {
-    if (!isMember) return;
-
     const fetchGroupStatus = async () => {
-      if (!tripGroupId) {
-        navigate('/', { replace: true });
+      if (!memberId) {
+        try {
+          const tripGroupId = await getInviteGroupInfo(inviteCode).then(
+            (res) => res.result.tripGroupId,
+          );
+          const status = await fetchGroupsData(tripGroupId).then(
+            (res) => res.groupInfo.status,
+          );
+
+          storage.set(inviteCode, { tripGroupId: tripGroupId });
+
+          if (status === 'ANALYZING') {
+            navigate(`/analysis/${inviteCode}`);
+          } else if (status === 'VOTING') {
+            navigate(`/results/${inviteCode}`);
+          } else if (status === 'COMPLETED') {
+            navigate(`/final/${inviteCode}`);
+          } else {
+            navigate(`/group/join/${inviteCode}`);
+          }
+
+          console.log(tripGroupId, status);
+        } catch (err) {
+          console.log(err);
+        }
         return;
       }
 
@@ -46,7 +68,7 @@ const JoinGroupPage = () => {
     };
 
     fetchGroupStatus();
-  }, [inviteCode, isMember, navigate, storedGroup]);
+  }, []);
 
   return (
     <form onSubmit={handleSubmit} className={styles['create-group-page']}>
