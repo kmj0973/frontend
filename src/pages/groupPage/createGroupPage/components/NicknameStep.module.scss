@@ -21,7 +21,7 @@
 
   p {
     color: var(--color-text-muted);
-    font-size: 12px;
+    font-size: var(--font-size-caption);
     font-weight: 300;
     line-height: 140%; /* 16.8px */
     letter-spacing: 0.288px;

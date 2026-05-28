@@ -1,7 +1,7 @@
 @use '@/styles/typography' as *;
 
 .final-page {
-  min-height: 100vh;
+  min-height: var(--app-vh, 100vh);
   background: linear-gradient(
     180deg,
     var(--color-brand-500) 0,
@@ -51,7 +51,7 @@
 }
 
 .final-page__content {
-  min-height: calc(100vh - 270px);
+  min-height: calc(var(--app-vh, 100vh) - 270px);
   display: flex;
   flex-direction: column;
   padding: 30px 36px 20px;

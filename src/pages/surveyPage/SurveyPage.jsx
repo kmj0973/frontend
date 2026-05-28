@@ -1,3 +1,6 @@
+// 라우터
+import { useNavigate, useParams } from 'react-router-dom';
+
 // 리액트, 스타일
 import style from './SurveyPage.module.scss';
 
@@ -19,6 +22,10 @@ import { SURVEY_TAGS, getSurveySelectOptionsByQuestion } from '@/constants/surve
 import { SURVEY_FORM_NAME } from '@/constants/surveyFormName';
 
 function SurveyPage() {
+    // 에러 핸들링을 위한 라우터
+    const navigate = useNavigate();
+    const { inviteCode } = useParams();
+
     const {
         nowForm,
         isError,
@@ -84,7 +91,14 @@ function SurveyPage() {
                 />);
 
             default:
-                return <div>페이지를 찾을 수 없습니다.</div>;
+                // 에러시 그룹 페이지로 리다이렉트
+                if (inviteCode) {
+                    navigate(`/group/${inviteCode}`);
+                    return null;
+                } else {
+                    navigate(`/not-found`);
+                    return null;
+                }
         }
     }
 

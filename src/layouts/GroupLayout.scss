@@ -1,0 +1,62 @@
+$group-font-family: var(--font-family-body);
+$group-page-bg-color: var(--color-bg);
+$group-padding-x: 20px;
+$group-desktop-max-width: 480px;
+$group-section-gap-after-header: 40px;
+$group-section-gap-invite-progress: 40px;
+$group-section-gap-progress-button: 20px;
+$group-body-margin-bottom: 35px;
+
+@mixin group-page-shell {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    min-height: var(--app-vh, 100dvh);
+    box-sizing: border-box;
+    background-color: $group-page-bg-color;
+    font-family: $group-font-family;
+    overflow: visible;
+
+    @media (min-width: 768px) {
+        max-width: $group-desktop-max-width;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+@mixin group-wrapper-base {
+    width: 100%;
+    box-sizing: border-box;
+    font-family: $group-font-family;
+}
+
+@mixin group-stack-container {
+    @include group-wrapper-base;
+    display: flex;
+    flex-direction: column;
+}
+
+@mixin group-page-content-padding {
+    width: 100%;
+    padding-left: $group-padding-x;
+    padding-right: $group-padding-x;
+    box-sizing: border-box;
+}
+
+@mixin group-page-footer {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin-top: $group-section-gap-progress-button;
+    padding-bottom: max(
+        $group-body-margin-bottom,
+        env(safe-area-inset-bottom, 0px)
+    );
+    box-sizing: border-box;
+
+    & > button {
+        width: 100%;
+    }
+}

@@ -1,7 +1,6 @@
 .error-page {
   display: flex;
-  min-height: 100vh;
-  min-height: 100dvh;
+  min-height: var(--app-vh, 100dvh);
   flex-direction: column;
   justify-content: space-between;
   padding: 44px 24px 36px;

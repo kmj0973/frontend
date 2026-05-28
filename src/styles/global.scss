@@ -16,6 +16,7 @@
 
 :root {
   color-scheme: light;
+  --app-vh: 100dvh;
 
   /* Color system drafted from the survey, analysis, and group-entry Figma nodes. */
   --color-brand-500: #ff822e;
@@ -73,6 +74,7 @@
   --space-6: 1.5rem;
   --space-8: 2rem;
   --space-10: 2.5rem;
+
 }
 
 html {
@@ -87,14 +89,17 @@ body {
   font-family: var(--font-family-body);
   font-size: var(--font-size-body);
   line-height: var(--line-height-normal);
+  min-height: calc(var(--app-vh, 100dvh) + 1px);
+  overflow-y: auto;
 }
 
 #root {
   width: 100%;
   max-width: 430px;
-  min-height: 100vh;
+  min-height: calc(var(--app-vh, 100dvh) + 1px);
   margin: 0 auto;
   background: var(--color-surface);
+  overflow: visible;
 }
 
 button,

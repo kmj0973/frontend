@@ -1,7 +1,7 @@
 @use '@/styles/typography' as *;
 
 .results-page {
-  min-height: 100vh;
+  min-height: var(--app-vh, 100vh);
   display: flex;
   justify-content: center;
   background: var(--color-bg);
@@ -10,7 +10,7 @@
 
 .results-phone-frame {
   width: 100%;
-  min-height: 100vh;
+  min-height: var(--app-vh, 100vh);
   position: relative;
   background: linear-gradient(
     180deg,

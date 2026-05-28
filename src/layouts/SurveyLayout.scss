@@ -3,29 +3,29 @@ $survey-tier-2-height: 88px;
 $survey-tier-4-height: 72px;
 $survey-tier-gap: 20px;
 $survey-padding-x: 20px;
-$survey-body-gap: 12px;
+$survey-body-gap: var(--space-3);
 $survey-body-margin-bottom: 35px;
 $survey-question-font-size: 20px;
-$survey-sub-font-size: 12px;
+$survey-sub-font-size: var(--font-size-caption);
 
 @mixin survey-form-shell {
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 100%;
-    height: 100%;
-    min-height: 0;
+    height: auto;
+    min-height: 100%;
     padding: 0 $survey-padding-x;
     box-sizing: border-box;
     gap: $survey-tier-gap;
-    overflow-y: auto;
+    overflow: visible;
 }
 
 @mixin survey-tier-body {
     flex: 1;
     min-height: 0;
     width: 100%;
-    overflow-y: auto;
+    overflow: visible;
     -webkit-overflow-scrolling: touch;
 }
 

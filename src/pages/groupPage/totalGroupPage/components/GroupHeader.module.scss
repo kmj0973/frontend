@@ -1,0 +1,38 @@
+@use '@/layouts/GroupLayout' as layout;
+
+$color-header-bg: rgba(255, 217, 192, 0.3);
+$color-text-primary: #191919;
+$color-text-sub: #848B9C;
+
+.header-container {
+    @include layout.group-stack-container;
+    align-items: flex-start;
+    background-color: $color-header-bg;
+    padding:
+        calc(60px + env(safe-area-inset-top, 0px))
+        34px
+        32px;
+    .header-name {
+        margin: 0 0 7px;
+        font-size: 18px;
+        font-weight: 600;
+        line-height: 140%;
+        letter-spacing: 0.432px;
+        color: $color-text-primary;
+    }
+
+    .header-duration {
+        margin: 0;
+        font-size: 12px;
+        font-weight: 300;
+        line-height: 140%;
+        color: $color-text-sub;
+    }
+}
+
+// 모바일 브라우저에서만 여백 조정
+:global(.is-browser) .header-container {
+    @media (max-height: 767px) {
+        padding: 40px 20px 28px;
+    }
+}

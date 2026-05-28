@@ -1,0 +1,128 @@
+@use '@/layouts/GroupLayout' as layout;
+
+$color-primary: #FF822E;
+$color-primary-light-bg: #FFF2EA;
+$color-text-primary: #191919;
+$color-text-sub: #848B9C;
+$color-border-default: #E2E2E2;
+$color-surface-default: #FFFFFF;
+
+.progress-wrapper {
+    @include layout.group-stack-container;
+    height: 100%;
+    min-height: 0;
+    padding: 0;
+
+    .progress-info-container {
+        display: flex;
+        flex-shrink: 0;
+        align-items: flex-end;
+        justify-content: space-between;
+        margin-bottom: 14px;
+    }
+
+    .progress-info {
+        font-size: 16px;
+        font-weight: 600;
+        line-height: 140%;
+        letter-spacing: 0.384px;
+        color: $color-text-primary;
+    }
+
+    .progress-count {
+        font-size: 10px;
+        font-weight: 500;
+        line-height: 140%;
+        letter-spacing: 0.24px;
+        color: $color-text-sub;
+    }
+
+    .progress-member-container {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        gap: 8px;
+        min-height: 0;
+        overflow: visible;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .member-block {
+        display: flex;
+        flex-shrink: 0;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        box-sizing: border-box;
+        width: 100%;
+        min-height: 58px;
+        padding: 12px 14px;
+        border: 2px solid $color-border-default;
+        border-radius: 12px;
+        background-color: $color-surface-default;
+
+        &:has(.member-completed-text) {
+            border-color: $color-primary;
+            background-color: $color-primary-light-bg;
+        }
+
+        > button {
+            flex-shrink: 0;
+            height: auto;
+            min-height: unset;
+            padding: 10px;
+            white-space: nowrap;
+            -webkit-tap-highlight-color: transparent;
+            transition: transform 0.15s ease, filter 0.15s ease;
+
+            &:active {
+                transform: scale(0.96);
+                filter: brightness(0.9);
+            }
+        }
+    }
+
+    .member-left-side {
+        display: flex;
+        flex: 1;
+        align-items: center;
+        gap: 8px;
+        min-width: 0;
+    }
+
+    .member-icon {
+        flex-shrink: 0;
+        width: 20px;
+        height: 20px;
+        object-fit: contain;
+    }
+
+    .member-name {
+        overflow: hidden;
+        font-size: 14px;
+        font-weight: 500;
+        line-height: 140%;
+        letter-spacing: 0.336px;
+        color: $color-text-primary;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .member-completed-text {
+        flex-shrink: 0;
+        font-size: 12px;
+        font-weight: 500;
+        line-height: 140%;
+        letter-spacing: 0.288px;
+        color: $color-primary;
+    }
+
+    .member-pending-text {
+        flex-shrink: 0;
+        font-size: 12px;
+        font-weight: 500;
+        line-height: 140%;
+        letter-spacing: 0.288px;
+        color: $color-text-sub;
+    }
+}

@@ -2,7 +2,7 @@
 
 .create-group-page {
   display: flex;
-  min-height: 100vh;
+  min-height: var(--app-vh, 100vh);
   flex-direction: column;
 }
 
@@ -12,7 +12,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  padding: 0 24px;
+  padding: 0 var(--space-6);
   text-align: center;
 }
 

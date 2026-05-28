@@ -5,7 +5,7 @@
 
     .content-area {
         @include layout.survey-tier-body;
-        overflow-y: auto;
+        overflow: visible;
         gap: 16px;
         padding-top: 8px;
         padding-bottom: 8px;
@@ -26,7 +26,7 @@
         .tag-title {
             font-size: 14px;
             font-weight: 400;
-            color: #191919;
+            color: var(--color-text-strong);
             margin-bottom: 24px;
         }
 

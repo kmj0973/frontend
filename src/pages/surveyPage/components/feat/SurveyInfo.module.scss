@@ -1,9 +1,5 @@
 @use '@/layouts/SurveyLayout' as layout;
 
-$text-main-color: #191919;
-$text-sub-color: #555555;
-$error-color: #FF4D4D;
-
 .info-container {
     display: flex;
     flex-direction: column;
@@ -12,7 +8,7 @@ $error-color: #FF4D4D;
     width: 100%;
     gap: layout.$survey-tier-gap;
     box-sizing: border-box;
-    font-family: "Pretendard Variable", sans-serif;
+    font-family: var(--font-family-body);
     line-height: 140%;
     letter-spacing: 2.4%;
 }
@@ -36,11 +32,11 @@ $error-color: #FF4D4D;
     .img-description {
         font-size: 12px;
         font-weight: 300;
-        color: $text-main-color;
+        color: var(--color-text-strong);
         margin: 0;
 
         &.error {
-            color: $error-color;
+            color: var(--color-danger);
             font-weight: 500;
         }
     }
@@ -56,15 +52,15 @@ $error-color: #FF4D4D;
     .question-description {
         font-size: layout.$survey-question-font-size;
         font-weight: 600;
-        color: $text-main-color;
+        color: var(--color-text-strong);
         margin: 0 0 8px;
     }
 
     .sub-description {
         font-size: layout.$survey-sub-font-size;
-        font-weight: 400;
+        font-weight: var(--font-weight-regular);
         letter-spacing: 0%;
-        color: $text-sub-color;
+        color: var(--color-text);
         margin: 0;
     }
 }

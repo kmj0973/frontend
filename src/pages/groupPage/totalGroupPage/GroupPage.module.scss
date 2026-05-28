@@ -1,0 +1,56 @@
+@use '@/layouts/GroupLayout' as layout;
+
+$color-page-loading-text: #ff822e;
+
+.loading-container {
+    @include layout.group-stack-container;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+    min-height: var(--app-vh, 100dvh);
+    color: $color-page-loading-text;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 140%;
+    letter-spacing: 0.432px;
+    overflow: visible;
+}
+
+.group-container {
+    @include layout.group-page-shell;
+
+    .header-section {
+        flex-shrink: 0;
+        width: 100%;
+    }
+
+    .invite-section,
+    .progress-section,
+    .next-button-container {
+        @include layout.group-page-content-padding;
+    }
+
+    .invite-section {
+        flex-shrink: 0;
+        margin-top: layout.$group-section-gap-after-header;
+        margin-bottom: layout.$group-section-gap-invite-progress;
+    }
+    .progress-section {
+        flex: 1;
+        min-height: 0;
+    }
+    
+    .next-button-container {
+        @include layout.group-page-footer;
+    }
+}
+
+// 모바일 브라우저에서만 여백 조정
+:global(.is-browser) .group-container {
+    @media (max-height: 767px) {
+        .invite-section {
+            margin-top: layout.$group-section-gap-after-header * 0.6;
+            margin-bottom: layout.$group-section-gap-invite-progress * 0.6;
+        }
+    }
+}

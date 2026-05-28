@@ -8,7 +8,7 @@ import CreateGroupPage from '@/pages/groupPage/createGroupPage/CreateGroupPage';
 import JoinGroupPage from '@/pages/groupPage/joinGroupPage/JoinGroupPage';
 import FinalPage from '@/pages/finalPage/FinalPage';
 import ResultFallback from '@/components/common/boundary/ResultFallback';
-import GroupPage from '@/pages/groupPage/GroupPage';
+import GroupPage from '@/pages/groupPage/totalGroupPage/GroupPage';
 import AppErrorFallback from '@/components/common/boundary/AppErrorFallback';
 
 const router = createBrowserRouter([

@@ -1,7 +1,7 @@
 @use '@/styles/typography' as *;
 
 .result-fallback {
-  min-height: 100vh;
+  min-height: var(--app-vh, 100vh);
   display: flex;
   flex-direction: column;
   justify-content: space-between;

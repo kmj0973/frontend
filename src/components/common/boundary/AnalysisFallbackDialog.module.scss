@@ -2,7 +2,7 @@
   position: absolute;
   inset: 0;
   width: 100%;
-  height: 100vh;
+  height: var(--app-vh, 100vh);
   background: rgba(24, 24, 24, 0.3);
   z-index: 20;
 }
