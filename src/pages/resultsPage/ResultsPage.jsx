@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { replace, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { getAnalysisResults } from '@/apis/analysisApi';
 import { getVotes } from '@/apis/groupApi';
 import { fetchGroupsData } from '@/apis/tripGroupsApi';
@@ -58,11 +58,11 @@ const ResultsPage = () => {
           parsedResult?.conflictCards.length == 0 ||
           parsedResult?.topPlans.length == 0
         ) {
-          navigate(`/results/e/${inviteCode}`, replace);
+          navigate(`/results/e/${inviteCode}`, { replace: true });
         }
       } catch (err) {
         console.log('결과 가져오기 실패', err);
-        navigate(`/results/e/${inviteCode}`, replace);
+        navigate(`/results/e/${inviteCode}`, { replace: true });
         setConflictCards([]);
         setPlans([]);
       }

@@ -11,7 +11,7 @@ const AnalysisFallbackDialog = ({ onRetry, onBackToGroup }) => {
       return;
     }
 
-    navigate(`/group/${inviteCode}`);
+    navigate(`/group/${inviteCode}`, { replace: true });
   };
 
   const handleRetry = () => {

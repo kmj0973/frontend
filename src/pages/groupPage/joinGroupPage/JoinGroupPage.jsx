@@ -35,13 +35,13 @@ const JoinGroupPage = () => {
           storage.set(inviteCode, { tripGroupId: tripGroupId });
 
           if (status === 'ANALYZING') {
-            navigate(`/analysis/${inviteCode}`);
+            navigate(`/analysis/${inviteCode}`, { replace: true });
           } else if (status === 'VOTING') {
-            navigate(`/results/${inviteCode}`);
+            navigate(`/results/${inviteCode}`, { replace: true });
           } else if (status === 'COMPLETED') {
-            navigate(`/final/${inviteCode}`);
+            navigate(`/final/${inviteCode}`, { replace: true });
           } else {
-            navigate(`/group/join/${inviteCode}`);
+            navigate(`/group/join/${inviteCode}`, { replace: true });
           }
 
           console.log(tripGroupId, status);
@@ -55,15 +55,15 @@ const JoinGroupPage = () => {
       const status = response.groupInfo.status;
 
       if (status === 'GATHERING') {
-        navigate(`/group/${inviteCode}`);
+        navigate(`/group/${inviteCode}`, { replace: true });
       } else if (status === 'ANALYZING') {
-        navigate(`/analysis/${inviteCode}`);
+        navigate(`/analysis/${inviteCode}`, { replace: true });
       } else if (status === 'VOTING') {
-        navigate(`/results/${inviteCode}`);
+        navigate(`/results/${inviteCode}`, { replace: true });
       } else if (status === 'COMPLETED') {
-        navigate(`/final/${inviteCode}`);
+        navigate(`/final/${inviteCode}`, { replace: true });
       } else {
-        navigate('/');
+        navigate('/', { replace: true });
       }
     };
 

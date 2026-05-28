@@ -19,7 +19,7 @@ const ResultFallback = () => {
   const handleReset = async () => {
     try {
       await resetSurveyData(tripGroupId);
-      navigate(`/group/${inviteCode}`);
+      navigate(`/group/${inviteCode}`, { replace: true });
     } catch (err) {
       console.log(err);
     }

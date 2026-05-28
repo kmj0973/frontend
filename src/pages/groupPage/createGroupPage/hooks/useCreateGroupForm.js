@@ -20,7 +20,7 @@ import {
 } from '@/utils/groupFormUtils.js';
 import { createGroup } from '@/apis/groupApi';
 import { storage } from '@/utils/storage';
-import { replace, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 export const useCreateGroupForm = () => {
   const navigate = useNavigate();
@@ -128,7 +128,7 @@ export const useCreateGroupForm = () => {
       sessionStorage.removeItem(SESSION_KEY);
 
       //여기에 진행현황 페이지 라우팅 코드
-      navigate(`/group/${result.inviteCode}`, replace);
+      navigate(`/group/${result.inviteCode}`, { replace: true });
     } catch (error) {
       console.error(error);
     } finally {
