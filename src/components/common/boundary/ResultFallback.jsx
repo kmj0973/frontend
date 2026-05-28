@@ -1,6 +1,8 @@
 import { useNavigate } from 'react-router-dom';
 import Button from '../button/Button';
 import styles from './ResultFallback.module.scss';
+import { useStoredGroup } from '@/hooks/useStoredGroup';
+import { resetSurveyData } from '@/apis/tripSurveysApi';
 
 const CONFLICT_ITEMS = [
   '15만 원 예산으로는 항공 이동이 부담될 수 있어요',
@@ -10,6 +12,18 @@ const CONFLICT_ITEMS = [
 
 const ResultFallback = () => {
   const navigate = useNavigate();
+  const { inviteCode, tripGroupId } = useStoredGroup({
+    redirectOnMissing: true,
+  });
+
+  const handleReset = async () => {
+    try {
+      await resetSurveyData(tripGroupId);
+      navigate(`/group/${inviteCode}`);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
     <section className={styles['result-fallback']}>
@@ -38,7 +52,7 @@ const ResultFallback = () => {
       </div>
 
       <div className={styles['result-fallback__actions']}>
-        <Button type="button" variant="muted" onClick={() => navigate('/')}>
+        <Button type="button" variant="muted" onClick={handleReset}>
           멤버 응답 다시 받기
         </Button>
         <Button type="button" variant="brand" onClick={() => navigate('/')}>

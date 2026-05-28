@@ -55,7 +55,7 @@ const ResultsPage = () => {
         setPlans(parsedResult?.topPlans ?? []);
         if (
           parsedResult?.conflictCards.length == 0 ||
-          parsedResult?.topPlans == 0
+          parsedResult?.topPlans.length == 0
         ) {
           navigate(`/results/e/${inviteCode}`, replace);
         }
