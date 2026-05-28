@@ -32,13 +32,13 @@ const JoinGroupPage = () => {
       const response = await fetchGroupsData(tripGroupId);
       const status = response.groupInfo.status;
 
-      if (status == 'GATHERING') {
+      if (status === 'GATHERING') {
         navigate(`/group/${inviteCode}`);
-      } else if (status == 'ANALYZING') {
+      } else if (status === 'ANALYZING') {
         navigate(`/analysis/${inviteCode}`);
-      } else if (status == 'VOTING') {
-        navigate(`/reuslts/${inviteCode}`);
-      } else if (status == 'COMPLETED') {
+      } else if (status === 'VOTING') {
+        navigate(`/results/${inviteCode}`);
+      } else if (status === 'COMPLETED') {
         navigate(`/final/${inviteCode}`);
       } else {
         navigate('/');
