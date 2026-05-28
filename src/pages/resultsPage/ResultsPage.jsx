@@ -112,7 +112,7 @@ const ResultsPage = () => {
             <p className={styles['results-hero-meta']}>
               {GROUP_HEADER_TEXT[groupInfo.tripLength]}
               {groupInfo.startDate && groupInfo
-                ? `${groupInfo.startDate} - ${groupInfo.endDate}`
+                ? ` / ${groupInfo.startDate} - ${groupInfo.endDate}`
                 : ''}
               ·{groupInfo.memberLength}명
             </p>
