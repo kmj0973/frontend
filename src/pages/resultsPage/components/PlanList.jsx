@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { topPlans as fallbackPlans } from '@/constants/topPlans';
-import { storage } from '@/utils/storage';
 import { postVotes } from '@/apis/groupApi';
+import { getStoredVote, saveStoredVote } from '@/utils/voteState';
 import styles from './PlanList.module.scss';
 
 const ChevronIcon = ({ open = false }) => (
@@ -61,11 +61,14 @@ const PlanList = ({
   topPlans = fallbackPlans,
   voteList = [],
   setVoteList,
+  inviteCode,
   tripGroupId,
   memberId,
   memberLength,
 }) => {
-  const voting = storage.get('voting') || false;
+  const storedVote = getStoredVote(inviteCode, tripGroupId, memberId);
+  const votedPlanId = storedVote?.planId ?? null;
+  const [isSubmittingVote, setIsSubmittingVote] = useState(false);
   const [openPlans, setOpenPlans] = useState(() =>
     topPlans.reduce((acc, plan, index) => {
       acc[plan.title] = index === 0 || Boolean(plan.expanded);
@@ -81,28 +84,44 @@ const PlanList = ({
   };
 
   const handleVoting = async (planId) => {
-    if (voting) {
-      alert('이미 투표하셨습니다.');
+    if (votedPlanId != null) {
+      alert('이미 투표했어요.');
       return;
     }
 
     try {
+      setIsSubmittingVote(true);
+
       const response = await postVotes(planId, tripGroupId, memberId);
       console.log(response);
 
       if (typeof setVoteList === 'function') {
-        setVoteList((prev) =>
-          prev.map((vote) =>
+        setVoteList((prev) => {
+          const hasMatchingPlan = prev.some((vote) => vote.planId === planId);
+
+          if (!hasMatchingPlan) {
+            return [...prev, { planId, voteCount: 1 }];
+          }
+
+          return prev.map((vote) =>
             vote.planId === planId
-              ? { ...vote, voteCount: vote.voteCount + 1 }
+              ? { ...vote, voteCount: (vote.voteCount ?? 0) + 1 }
               : vote,
-          ),
-        );
+          );
+        });
       }
 
-      storage.set('voting', true);
+      saveStoredVote(inviteCode, tripGroupId, memberId, planId);
     } catch (err) {
+      if (err?.response?.status === 409) {
+        saveStoredVote(inviteCode, tripGroupId, memberId, planId);
+        alert('이미 투표가 반영된 상태예요.');
+        return;
+      }
+
       console.log('투표 요청 실패', err);
+    } finally {
+      setIsSubmittingVote(false);
     }
   };
 
@@ -111,6 +130,7 @@ const PlanList = ({
       {topPlans.map((plan, index) => {
         const isOpen = openPlans[plan.title];
         const voteCount = voteList[index]?.voteCount ?? 0;
+        const isSelectedPlan = votedPlanId === index + 1;
 
         return (
           <article
@@ -162,9 +182,10 @@ const PlanList = ({
                     type="button"
                     onClick={() => handleVoting(index + 1)}
                     className={styles['vote-button']}
+                    disabled={isSubmittingVote || votedPlanId != null}
                     tabIndex={isOpen ? 0 : -1}
                   >
-                    이 플랜 투표하기
+                    {isSelectedPlan ? '투표 완료' : '이 플랜에 투표하기'}
                   </button>
                   <p className={styles['vote-meta']}>
                     현재 {voteCount}표 · 총 {memberLength}명 중

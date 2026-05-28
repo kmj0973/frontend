@@ -4,6 +4,7 @@ import { getAnalysisResults } from '@/apis/analysisApi';
 import { getVotes } from '@/apis/groupApi';
 import { fetchGroupsData } from '@/apis/tripGroupsApi';
 import { useStoredGroup } from '@/hooks/useStoredGroup';
+import { clearStoredVote } from '@/utils/voteState';
 import styles from './ResultsPage.module.scss';
 import PlanList from './components/PlanList';
 import ConflictList from './components/ConflictList';
@@ -88,7 +89,7 @@ const ResultsPage = () => {
 
         if (totalVoteCount >= groupInfo.memberLength) {
           clearInterval(pollingId);
-          localStorage.removeItem('voting');
+          clearStoredVote(inviteCode);
           navigate(`/final/${inviteCode}`);
         }
       } catch (err) {
@@ -129,6 +130,7 @@ const ResultsPage = () => {
               topPlans={plans}
               voteList={voteList}
               setVoteList={setVoteList}
+              inviteCode={inviteCode}
               tripGroupId={tripGroupId}
               memberId={memberId}
               memberLength={groupInfo.memberLength}
